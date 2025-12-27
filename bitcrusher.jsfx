@@ -1,0 +1,87 @@
+desc:    Bitcrusher
+version: 1.1
+tags:    lofi
+link:    https://github.com/mrtnvgr/jsfx
+
+// Input
+// Hard / Soft clip (0-1)
+// Soft clip type (Tanh, Sin)
+// TODO: make dist like this: Saturation mode, hard clipping blend (%)
+
+slider11:input_db=0<-24,48,0.0001>Input (dB)
+
+slider21:clip_mode=0<0,2,1{Hard,Soft,Wrap}>Clip mode
+
+slider31:sah_reset=0<0,40,1>Sample and Hold
+slider32:bits=24<0,24,0.0001>Bits
+slider33:wet_amount=1<0,1,0.0001>Dry / Wet
+
+slider52:output_db=0<-48,48,0.0001>Output (dB)
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@init
+ext_noinit    =  1.0;
+ext_tail_size = -2;
+
+dry0 = dry1 = 0;
+
+sah_counter = -1;
+hold0 = hold1 = 0;
+
+function tanh(x) (
+  2/(1+exp(-2*x)) - 1
+);
+
+function db2gain(db) (
+  pow(10, db * 0.05)
+);
+
+@slider
+input_gain  = db2gain(input_db);
+output_gain = db2gain(output_db);
+
+dry_amount = 1 - wet_amount;
+
+bit_depth = 2 ^ bits;
+inv_bit_depth = 1 / bit_depth;
+
+@sample
+spl0 *= input_gain;
+spl1 *= input_gain;
+
+dry0 = spl0;
+dry1 = spl1;
+
+// ============ clipping ============
+    (clip_mode == 0) ? (
+  spl0 = min(max(spl0, -1), 1);
+  spl1 = min(max(spl1, -1), 1);
+) : (clip_mode == 1) ? (
+  spl0 = tanh(spl0);
+  spl1 = tanh(spl1);
+) : (clip_mode == 2) ? (
+  spl0 = sin(spl0);
+  spl1 = sin(spl1);
+);
+// ==================================
+
+// === downsampling & bitcrushing ===
+sah_counter = (sah_counter + 1) % sah_reset;
+sah_counter == 0 ? (
+  hold0 = spl0;
+  hold1 = spl1;
+);
+
+spl0 = floor(hold0 * bit_depth) * inv_bit_depth;
+spl1 = floor(hold1 * bit_depth) * inv_bit_depth;
+// ==================================
+
+spl0 = spl0 * wet_amount + dry0 * dry_amount;
+spl1 = spl1 * wet_amount + dry1 * dry_amount;
+
+spl0 *= output_gain;
+spl1 *= output_gain;

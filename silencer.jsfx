@@ -1,0 +1,25 @@
+desc:    Silencer
+version: 1.0
+tags:    utility gain volume trim
+link:    https://github.com/mrtnvgr/jsfx
+
+slider1:trim_db=0<-150,0,0.0001>Volume (dB)
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+@init
+ext_tail_size = -2;
+
+function db2gain(db) (
+  pow(10, db * 0.05)
+);
+
+@slider
+trim = db2gain(trim_db);
+
+@sample
+spl0 *= trim;
+spl1 *= trim;
