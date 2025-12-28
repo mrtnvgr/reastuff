@@ -1,5 +1,5 @@
 desc:    MDA Overdrive
-version: 0.0
+version: 1.0
 tags:    gain overdrive
 link:    https://github.com/mrtnvgr/jsfx
 
@@ -15,9 +15,9 @@ in_pin:right input
 out_pin:left output
 out_pin:right output
 
-@init                                           
+@init
 ext_noinit    =  1.0;
-ext_tail_size = -2;                             
+ext_tail_size = -2;
 
 function db2gain(db) (
   pow(10, db * 0.05)
@@ -28,7 +28,7 @@ function sqrt2(x) (
 );
 
 function dist(x, drive) (
-  drive * (sqrt2(x) - x) + x 
+  drive * (sqrt2(x) - x) + x
 );
 
 @slider
@@ -36,7 +36,7 @@ input_gain  = db2gain(input_db);
 output_gain = db2gain(output_db);
 
 p_spl0 = p_spl1 = 0;
-filtr_coef = pow(10, -1.6 * muffle / 100);
+filtr_coef = pow(10, -1.6 * muffle);
 
 @sample
 spl0 *= input_gain;
@@ -46,12 +46,10 @@ spl0 = dist(spl0, drive);
 spl1 = dist(spl1, drive);
 
 // One pole LP filter
-spl0 = p_spl0 = p_spl0 + filtr_coef * (spl0 - p_spl0);
-spl1 = p_spl1 = p_spl1 + filtr_coef * (spl1 - p_spl1);
-
-// denormals
-(p_spl0 <= 1.0e-10) ? ( p_spl0 = 0; );
-(p_spl1 <= 1.0e-10) ? ( p_spl1 = 0; );
+p_spl0 = p_spl0 + filtr_coef * (spl0 - p_spl0);
+p_spl1 = p_spl1 + filtr_coef * (spl1 - p_spl1);
+spl0 = p_spl0;
+spl1 = p_spl1;
 
 spl0 *= output_gain;
 spl1 *= output_gain;
