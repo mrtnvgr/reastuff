@@ -12,7 +12,8 @@ slider22:ms_int_rounding=0<0,1,1{Off,On}>Round ms?
 
 slider31:float1=0<0,10000,1>Float start (ms)
 slider32:float2=0<0,10000,1>Float end (ms)
-slider33:float=0<0,1,0>Output (float)
+slider33:float_center=0.5<-0.99,0.99,0.01>Center (float)
+slider34:float=0<0,1,0>Output (float)
 
 /*
   slider41:trigger_off=0<0,1,0.001>Trigger off position
@@ -32,7 +33,7 @@ out_pin:none
 ext_tail_size = -2;
 
 @slider
-note_division = 2 ^ note_division_number;
+note_division = 1 << note_division_number;
 
 ms_per_division = (1 / note_division) * 240000;
     (note_kind == 1) ? ( // dotted
@@ -50,6 +51,11 @@ float_delta =
     ( float1 - float2 );
 float_delta = 1 / float_delta;
 
+(float_center != 0.5) ? (
+  float_log_b = pow(1 / float_center - 1, 2);
+  float_log_a = 1 / (b - 1);
+);
+
 //trigger_samples = (srate / 1000) * trigger_ms;
 
 @sample
@@ -57,6 +63,10 @@ ms = ms_per_notes / tempo;
 (ms_int_rounding) ? ( ms = floor(ms); );
 
 float = ms * float_delta;
+
+(float_center != 0.5) ? (
+  float = float_log_a * ((float_log_b ^ float) - 1);
+);
 
 ms = floor(ms);
 
