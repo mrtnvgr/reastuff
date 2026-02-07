@@ -1,0 +1,22 @@
+desc:    Transpose by MIDI channel number
+version: 1.0
+link:    https://github.com/mrtnvgr/jsfx
+
+in_pin:none
+out_pin:none
+
+@init
+ext_tail_size = -2;
+
+@block
+while (midirecv(offset, msg1, msg2, msg3)) (
+  msg_type = msg1 / 16;
+
+  // Note on, note off
+  (7 < msg_type < 10) ? (
+    midi_channel = msg1 % 16;
+    msg2 += midi_channel;
+  );
+
+  midisend(offset, msg1, msg2, msg3);
+);
