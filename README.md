@@ -29,3 +29,7 @@ Exposes selected MIDI CC as sliders for parameter mapping.
 ### [**Audio -> Parameter**](./audio_to_parameter.jsfx)
 
 Exposes 1 audio channel in a parameter, useful for CV.
+
+### [**MIDI CC -> Audio CV**](./midi_cc_to_cv.jsfx)
+
+Converts MIDI CC events to audio CV *with batteries included*.
