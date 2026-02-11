@@ -1,10 +1,13 @@
 desc:    Audio -> Parameter
-version: 1.0
+version: 1.1
 link:    https://github.com/mrtnvgr/jsfx
 
 slider1:0<-10,10,0>Output
 
 in_pin:input
+out_pin:none
+
+options:no_meter
 
 @init
 ext_noinit    =  1.0;
