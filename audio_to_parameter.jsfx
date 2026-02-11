@@ -1,0 +1,14 @@
+desc:    Audio -> Parameter
+version: 1.0
+link:    https://github.com/mrtnvgr/jsfx
+
+slider1:0<-10,10,0>Output
+
+in_pin:input
+
+@init
+ext_noinit    =  1.0;
+ext_tail_size = -2;
+
+@sample
+slider1 = spl0;

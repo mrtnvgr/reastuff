@@ -25,3 +25,7 @@ Made for quick transposing on Arturia Microlab.
 ### [**MIDI CC -> Parameter**](./midi_cc_to_parameter.jsfx)
 
 Exposes selected MIDI CC as sliders for parameter mapping.
+
+### [**Audio -> Parameter**](./audio_to_parameter.jsfx)
+
+Exposes 1 audio channel in a parameter, useful for CV.
