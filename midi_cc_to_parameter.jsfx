@@ -30,9 +30,9 @@ while (midirecv(offset, msg1, msg2, msg3)) (
 
   (is_cc && is_correct_cc && msg_channel == midi_channel) ? (
   	output = msg3;
-	output_float = msg3 / 127;
+	  slider_automate(slider21);
 
-	sliderchange(slider21);
-	sliderchange(slider22);
+	  output_float = msg3 / 127;
+	  slider_automate(slider22);
   );
 );
