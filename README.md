@@ -21,3 +21,7 @@ Converts note division to ms and float range.
 > new_note_pitch = note_pitch + note_midi_channel;
 
 Made for quick transposing on Arturia Microlab.
+
+### [**MIDI CC -> Parameter**](./midi_cc_to_parameter.jsfx)
+
+Exposes selected MIDI CC as sliders for parameter mapping.
