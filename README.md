@@ -1,6 +1,4 @@
-A bunch of JSFX plugins, enjoy!
-
-## Plugins
+## JSFX
 
 ### [**Bitcrusher**](./jsfx/bitcrusher.jsfx)
 
@@ -34,4 +32,4 @@ Converts MIDI CC events to audio CV *with batteries included*.
 
 ### [**Parameter scale / invert / attenuate / attenuvert**](./jsfx/parameter_utils.jsfx)
 
-Dead simple jsfx for parameter scaling, offseting
+Dead simple jsfx for parameter scaling, offseting.
