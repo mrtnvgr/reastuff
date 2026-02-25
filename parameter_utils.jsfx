@@ -1,0 +1,19 @@
+desc:    Parameter scale / invert / attenuate / attenuvert
+version: 1.0
+link:    https://github.com/mrtnvgr/jsfx
+
+slider11:input=0<0,1,0>Input
+
+slider21:offset=0<-1,1,0>Offset
+slider22:attenuvert=1<-1,1,0>Attenuverter
+
+slider31:output=0<0,1,0>Output
+
+in_pin:none
+out_pin:none
+
+@init
+ext_tail_size = -2;
+
+@sample
+output = input * attenuvert + offset;
